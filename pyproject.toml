@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ML_from_Scratch"
+version = "0.1.0"
+description = "An attempt to understand various machine learning algorithms through coding them from scratch (in Python)."
+authors = [
+    { name = "Greggory Zinniel", email = "gzinniel@gmail.com" }
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=2.0.2",  # May work on other numpy versions, currently testing on 2.2.1
+]

@@ -18,3 +18,9 @@ venv/
 # Other
 *.log
 *.bak
+
+# Drafting folder (not for github)
+drafts/
+
+# Don't upload gitignore (for now)
+.gitignore
