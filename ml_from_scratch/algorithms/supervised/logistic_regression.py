@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.typing import ArrayLike
 
-from ml_from_scratch.utils.validate_inputs import validate_supervised_fit, validate_supervised_predict
+from ml_from_scratch.utils.validate_inputs import validate_supervised_fit, validate_predict_regression
 from ml_from_scratch.utils.activation_functions import sigmoid, softmax
 
 
@@ -38,13 +38,13 @@ class LogisticRegression:
         Fits the Linear Regression model to the provided training data using gradient descent
 
         Args:
-            - features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
-            - features (ArrayLike): The input features matrix, must have shape [n_samples, ] or shape [n_samples, num_classes]
+            - predict_features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
+            - predict_features (ArrayLike): The input predict_features matrix, must have shape [n_samples, ] or shape [n_samples, num_classes]
         """
         # validate inputs and convert to numpy arrays
         features, targets = validate_supervised_fit(features, targets)
 
-        # One-hot encode features if using softmax
+        # One-hot encode predict_features if using softmax
         if self._activation_function == softmax:
             targets = np.eye(self.num_classes)[targets]
 
@@ -53,16 +53,16 @@ class LogisticRegression:
 
     def predict(self, features: ArrayLike) -> np.ndarray:
         """
-        Predicts target values for the given input data (features)
+        Predicts target values for the given input data (predict_features)
 
         Args:
-            - features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
+            - predict_features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
 
         Returns:
             - np.ndarray: Predicted target values, shape [n_samples, num_classes]
         """
         # validate inputs and convert to numpy arrays
-        features = validate_supervised_predict(features, self.weights, self.bias)
+        features = validate_predict_regression(features, self.weights, self.bias)
 
         # compute class_predictions
         linear_predictions = np.dot(features, self.weights) + self.bias
@@ -81,7 +81,7 @@ class LogisticRegression:
 
         Args:
             - features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
-            - features (ArrayLike): The input features matrix, must have shape [n_samples, ] or shape [n_samples, num_classes]
+            - targets (ArrayLike): The input predict_features matrix, must have shape [n_samples, ] or shape [n_samples, num_classes]
         """
         num_samples, num_features = features.shape
         self._initialize_weights_and_bias(num_features)
@@ -113,7 +113,7 @@ class LogisticRegression:
 
 if __name__ == '__main__':
     print('Testing Logistic Regression algorithm')
-    from examples import logistic_regression
+    from examples import logistic_regression, logistic_regression_multiclass
 
-    test_logistic_regression.test_binary_logistic_regression(visualize=True)
-    test_logistic_regression.test_multiclass_logistic_regression(visualize=True)
+    logistic_regression(visualize=True)
+    logistic_regression_multiclass(visualize=True)

@@ -2,7 +2,12 @@ class Node:
     """
     Represents a general node for tree-based models.
     """
-    def __init__(self, feature: int = None, threshold: float = None, left=None, right=None, *, value=None):
+    def __init__(
+            self,
+            feature: int = None,
+            threshold: float = None, mean: float = None, std: float = None,
+            left=None, right=None, *, value=None
+    ):
         """
         Initializes a node.
 
@@ -14,7 +19,11 @@ class Node:
             - value (int | None): Class value for leaf nodes.
         """
         self.feature = feature
+
         self.threshold = threshold
+        self.mean = mean
+        self.std = std
+
         self.left = left
         self.right = right
         self.value = value

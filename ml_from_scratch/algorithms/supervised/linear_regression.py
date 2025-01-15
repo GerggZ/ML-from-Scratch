@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.typing import ArrayLike
 
-from ml_from_scratch.utils.validate_inputs import validate_supervised_fit, validate_supervised_predict
+from ml_from_scratch.utils.validate_inputs import validate_supervised_fit, validate_predict_regression
 
 
 class LinearRegression:
@@ -27,8 +27,8 @@ class LinearRegression:
         Fits the Linear Regression model to the provided training data using gradient descent
 
         Args:
-            - features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
-            - features (ArrayLike): The input features matrix, must have shape [n_samples, ]
+            - predict_features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
+            - predict_features (ArrayLike): The input predict_features matrix, must have shape [n_samples, ]
         """
         # Validate inputs and convert to numpy arrays
         features, targets = validate_supervised_fit(features, targets)
@@ -38,16 +38,16 @@ class LinearRegression:
 
     def predict(self, features: ArrayLike) -> np.ndarray:
         """
-        Predicts target values for the given input data (features)
+        Predicts target values for the given input data (predict_features)
 
         Args:
-            - features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
+            - predict_features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
 
         Returns:
             - np.ndarray: Predicted target values, shape [n_samples, ]
         """
         # Validate inputs and convert to numpy arrays
-        features = validate_supervised_predict(features, self.weights, self.bias)
+        features = validate_predict_regression(features, self.weights, self.bias)
 
         # Compute class_predictions
         predicted_targets = np.dot(features, self.weights) + self.bias
@@ -59,8 +59,8 @@ class LinearRegression:
         Perform gradient descent on the training data
 
         Args:
-            - features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
-            - features (ArrayLike): The input features matrix, must have shape [n_samples, ]
+            - predict_features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
+            - predict_features (ArrayLike): The input predict_features matrix, must have shape [n_samples, ]
         """
         num_samples, num_features = features.shape
         self._initialize_weights_and_bias(num_features)
@@ -84,5 +84,5 @@ class LinearRegression:
 
 if __name__ == '__main__':
     print('Testing Linear Regression algorithm')
-    from examples import test_linear_regression
-    test_linear_regression(visualize=True)
+    from examples import linear_regression
+    linear_regression(visualize=True)

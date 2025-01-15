@@ -1,6 +1,6 @@
 import numpy as np
 from numpy.typing import ArrayLike
-from ml_from_scratch.utils.validate_inputs import validate_k_param, validate_supervised_fit, validate_supervised_predict
+from ml_from_scratch.utils.validate_inputs import validate_k_param, validate_supervised_fit, validate_predict_classifier
 from ml_from_scratch.utils.metrics import compute_pairwise_distances
 
 
@@ -22,8 +22,8 @@ class KNearestNeighbors:
         Fits the Linear Regression model to the provided training data using gradient descent
 
         Args:
-            - features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
-            - features (ArrayLike): The input features matrix, must have shape [n_samples, ]
+            - predict_features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
+            - predict_features (ArrayLike): The input predict_features matrix, must have shape [n_samples, ]
         """
         # Validate inputs and convert to numpy arrays
         features, targets = validate_supervised_fit(features, targets)
@@ -34,29 +34,31 @@ class KNearestNeighbors:
 
     def predict(self, features: ArrayLike) -> np.ndarray:
         """
-        Predicts target values for the given input data (features)
+        Predicts target values for the given input data (predict_features)
 
         Args:
-            - features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
+            - predict_features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
 
         Returns:
             - np.ndarray: Predicted target values, shape [n_samples, ]
         """
         # Validate inputs and convert to numpy arrays
-        features = validate_supervised_fit(features, self.targets)
+        features = validate_predict_classifier(features, self.features)
 
         # Calculate the pairwise distances between the input data and the training data
         distances = compute_pairwise_distances(features, self.features, metric='euclidean')
 
-        distances = np.array([np.linalg.norm(self.features - features, axis=1) for x in features])
+        # Find the labels of each k-nearest neighbor for each observation in input predict_features
+        k_nearest_indices_sorted = np.argsort(distances, axis=1)[:, :self.num_neighbors]
+        k_nearest_targets = self.targets[k_nearest_indices_sorted]
 
-        # Find the labels of each k-nearest neighbor for each observation in input features
-        k_nearest_indices_sorted = np.argsort(distances, axis=1)[:, :self.k]
-        k_nearest_labels = self.labels[k_nearest_indices_sorted]
-
-        # Use majority voting to get the most common nearest neighbor using np.bincounts()
-        predictions = [np.argmax(np.bincounts(labels)) for labels in k_nearest_labels]
+        # Use majority voting to get the most common nearest neighbor using np.bincount()
+        predictions = [np.argmax(np.bincount(targets)) for targets in k_nearest_targets]
 
         return predictions
 
 
+if __name__ == '__main__':
+    print('Testing K Nearest Neighbors algorithm')
+    from examples import k_nearest_neighbors
+    k_nearest_neighbors(visualize=True)
