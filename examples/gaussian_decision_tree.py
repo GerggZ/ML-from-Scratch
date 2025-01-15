@@ -33,14 +33,14 @@ def gaussian_decision_tree(visualize=False):
 
     # Visualization
     if visualize:
-        from examples.utils.plotting_regression_and_classification import plot_classification
+        from examples.utils.plotting_regression_and_classification import plot_classification_supervised
 
         # Reduce data to 2D (for visualization)
         pca = PCA(n_components=2)
         X_train_2d = pca.fit_transform(X_train)
         X_test_2d = pca.transform(X_test)
 
-        plot_classification(
+        plot_classification_supervised(
             X_train_2d, X_test_2d, y_train, y_test, predictions,
             title="Gaussian Decision Tree  Breast Cancer Classification\n(PCA-reduced)",
             xlabel="", ylabel="", labels=["Negative", "Positive"],

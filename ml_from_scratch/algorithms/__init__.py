@@ -9,3 +9,5 @@ from .supervised.gaussian_decision_tree import GaussianDecisionTree
 from .supervised.random_forest import RandomForest
 from .supervised.niave_bayes import NaiveBayes
 from .supervised.support_vector_machines import SupportVectorMachines
+
+from .unsupervised.k_means import KMeans

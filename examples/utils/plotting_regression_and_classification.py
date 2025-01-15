@@ -3,7 +3,7 @@ import matplotlib.lines as mlines
 import numpy as np
 
 
-def plot_classification(
+def plot_classification_supervised(
         X_train: np.ndarray, X_test: np.ndarray, y_train: np.ndarray, y_test: np.ndarray, predictions: np.ndarray,
         title: str = "", xlabel: str = "", ylabel: str = "", labels: list = [], supplimental_text: str = ""
 ) -> None:
@@ -71,6 +71,67 @@ def plot_classification(
     plt.legend(handles=legend_handles, loc="best", fontsize=10, frameon=True)
 
     # Show the plot
+    plt.show()
+
+
+def plot_classification_unsupervised(
+        X_data: np.ndarray, y_targets: np.ndarray, predictions: np.ndarray,
+        ltitle: str = "", rtitle: str = "", supplimental_text: str = "",
+        xlabel: str = "", ylabel: str = "", labels: list = [],
+) -> None:
+
+    # Compute global vmin and vmax for consistent color scaling
+    unique_labels = np.unique(np.concatenate((y_targets, predictions)))
+    vmin, vmax = unique_labels.min(), unique_labels.max()
+
+    # select color scheme based on number of classes:
+    cmap = plt.get_cmap('tab10' if len(unique_labels) <= 10 else 'tab20' if len(unique_labels) <= 20 else 'viridis')
+
+    fig, axes = plt.subplots(1, 2, figsize=(13, 6))
+
+    # KMeans Predicted Clusters
+    axes[0].scatter(
+        X_data[:, 0], X_data[:, 1], c=predictions,
+        cmap=cmap, vmin=vmin, vmax=vmax, s=50, marker="o", alpha=0.7
+    )
+    axes[0].set_title(ltitle, fontsize=14)
+    axes[0].set_xlabel(xlabel, fontsize=12)
+    axes[0].grid(True, linestyle='--', alpha=0.5)
+
+    # Ground Truth Clusters
+    axes[1].scatter(
+        X_data[:, 0], X_data[:, 1], c=y_targets,
+        cmap=cmap, vmin=vmin, vmax=vmax, s=50, marker="o", alpha=0.7
+    )
+    axes[1].set_title(rtitle, fontsize=14)
+    axes[1].set_xlabel(xlabel, fontsize=12)
+    axes[1].grid(True, linestyle='--', alpha=0.5)
+
+    plt.scatter(
+        X_data[:, 0], X_data[:, 1], c=y_targets,
+        cmap=cmap, vmin=vmin, vmax=vmax, s=50, marker="o", label="Correctly Classified", alpha=0.7
+    )
+
+    # Add supplimental text to the plot (e.g., accuracy, f1-score, etc.
+    if len(supplimental_text):
+        axes[1].text(
+            0.05, 0.95,
+            s=supplimental_text,
+            fontsize=12,
+            transform=plt.gca().transAxes,
+            verticalalignment='top',
+            bbox=dict(boxstyle="round,pad=0.3", edgecolor='black', facecolor='white')
+        )
+
+    # Add class-specific legend items if labels are provided
+    if labels and len(labels) == len(unique_labels):
+        handles = [
+            plt.Line2D([], [], color=cmap((label - vmin) / (vmax - vmin)), marker="o", linestyle="None", markersize=10, label=labels[idx])
+            for idx, label in enumerate(unique_labels)
+        ]
+        axes[0].legend(handles=handles, loc="best", fontsize=10, title="KMeans Clusters")
+        axes[1].legend(handles=handles, loc="best", fontsize=10, title="True Labels")
+
     plt.show()
 
 

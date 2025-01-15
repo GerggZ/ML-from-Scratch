@@ -28,14 +28,14 @@ def k_nearest_neighbors(visualize: bool = False):
 
     print(f"K Nearest Neighbors Model trained successfully")
     if visualize:
-        from examples.utils.plotting_regression_and_classification import plot_classification
+        from examples.utils.plotting_regression_and_classification import plot_classification_supervised
 
         # Reduce data to 2D (for visualization)
         pca = PCA(n_components=2)
         X_train_2d = pca.fit_transform(X_train)
         X_test_2d = pca.transform(X_test)
 
-        plot_classification(
+        plot_classification_supervised(
             X_train_2d, X_test_2d, y_train, y_test, predictions,
             title="k-Nearest Neighbors Visualization (PCA-reduced)", xlabel="", ylabel="",
             supplimental_text=f"Accuracy: {acc:.3f}"
