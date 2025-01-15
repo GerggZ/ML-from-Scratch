@@ -6,7 +6,7 @@ def entropy(targets: np.ndarray) -> float:
     Computes the entropy of a target distribution
 
     Args:
-        - predict_features (np.ndarray): Target values (e.g., class labels)
+        - predict_data (np.ndarray): Target values (e.g., class labels)
     """
 
     class_counts = np.bincount(targets)
@@ -21,7 +21,7 @@ def information_gain(feature_column: np.ndarray, targets: np.ndarray, threshold:
 
     Args:
         - feature_column (np.ndarray): Feature values of shape [n_samples, ].
-        - predict_features (np.ndarray): Target values of shape [n_samples, ].
+        - predict_data (np.ndarray): Target values of shape [n_samples, ].
         - threshold (float): Threshold for splitting.
 
     Returns:

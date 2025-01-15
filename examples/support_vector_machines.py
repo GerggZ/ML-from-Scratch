@@ -20,7 +20,7 @@ def support_vector_machines(visualize: bool = False):
     # switch the labels to {-1, 1}
     y = np.where(y == 0, -1, 1)
 
-    # Standardize the predict_features
+    # Standardize the predict_data
     scaler = StandardScaler()
     X = scaler.fit_transform(X)
 
@@ -33,7 +33,7 @@ def support_vector_machines(visualize: bool = False):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     # Train the Logistic Regression model
-    model = SupportVectorMachines(learning_rate=0.01, n_iters=1000, lambda_param=0.01)
+    model = SupportVectorMachines(learning_rate=0.01, n_iterations=1000, lambda_param=0.01)
     model.fit(X_train, y_train)
 
     # Make predictions on the test set

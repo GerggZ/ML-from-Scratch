@@ -7,7 +7,7 @@ from .supervised.k_nearest_neighbors import KNearestNeighbors
 from .supervised.decision_tree import DecisionTree
 from .supervised.gaussian_decision_tree import GaussianDecisionTree
 from .supervised.random_forest import RandomForest
-from .supervised.niave_bayes import NaiveBayes
+from .supervised.naive_bayes import NaiveBayes
 from .supervised.support_vector_machines import SupportVectorMachines
 
 from .unsupervised.k_means import KMeans

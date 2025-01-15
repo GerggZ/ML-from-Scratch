@@ -6,20 +6,24 @@ A collection of machine learning algorithms implemented from scratch using NumPy
 - **Supervised Learning**
   - Linear Regression
   - Logistic Regression
+  - Decision Tree
+  - Gaussian Decision Tree
+  - Random Forest
+  - Niave Bayes
+  - Support Vector Machines
 - **Unsupervised Learning**
-  - K-Means Clustering
-  - Principal Component Analysis (PCA)
-- **Optimization**
-  - Gradient Descent
-  - Stochastic Gradient Descent
-
+  - K-Means Clustering<small>
+  - ~~Principal Component Analysis (PCA)~~
+- ~~**Optimization**~~
+  - ~~Gradient Descent~~
+  - ~~Stochastic Gradient Descent~~
+</small>
 ## Folder Structure
 ```
 ml_from_scratch/         # Core library
     algorithms/          # ML algorithms
     utils/               # Helper functions
     datasets/            # Example datasets
-tests/                   # Unit tests
 examples/                # Usage examples
 requirements.txt         # Dependencies for the project
 ```
@@ -31,7 +35,8 @@ git clone https://github.com/GerggZ/ML-from-Scratch.git
 ```
 
 ### Install dependencies
-Install all required dependencies via the `requirements.txt` file:
+Install all required dependencies via the `requirements.txt` file:  
+<small>**Note**: _Requirements file not up do date_</small>
 ```bash
 pip install -r requirements.txt
 ```
@@ -41,30 +46,3 @@ Coming soon!
 
 ## License
 This project is licensed under the MIT License.
-
-## `.gitignore`
-To keep your repository clean and avoid uploading unnecessary files, include a `.gitignore` file with the following content:
-
-```
-# Byte-compiled files
-__pycache__/
-*.pyc
-
-# Virtual environments
-venv/
-
-# Environment variables
-.env
-*.env
-
-# System files
-.DS_Store
-.idea/
-*.iml
-.vscode/
-
-# Other
-*.log
-*.bak
-```
-

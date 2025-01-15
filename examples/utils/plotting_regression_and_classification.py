@@ -144,14 +144,14 @@ def plot_linear_regression(
     Plots the results of a linear regression model.
 
     Args:
-        - features (np.ndarray): Input features (1D or 2D with a single column).
+        - data (np.ndarray): Input data (1D or 2D with a single column).
         - targets (np.ndarray): Ground truth target values.
         - predictions (np.ndarray): Predicted target values by the model.
         - title (str): Title of the plot.
         - xlabel (str): Label for the x-axis.
         - ylabel (str): Label for the targets-axis.
     """
-    # Flatten features if it's 2D with a single column
+    # Flatten data if it's 2D with a single column
     if X.ndim > 1 and X.shape[1] == 1:
         X = X.ravel()
 

@@ -8,13 +8,13 @@ from ml_from_scratch.algorithms import NaiveBayes
 from ml_from_scratch.utils.metrics import accuracy_score
 
 
-def naive_bayes(visualize:bool = False):
+def naive_bayes(visualize: bool = False):
 
     # Load and split the dataset
     data = load_iris()
     X, y = data.data, data.target
 
-    # Standardize features
+    # Standardize data
     scaler = StandardScaler()
     X = scaler.fit_transform(X)
 

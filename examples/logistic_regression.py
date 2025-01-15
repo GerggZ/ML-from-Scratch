@@ -19,7 +19,7 @@ def logistic_regression(visualize: bool = False):
     data = load_breast_cancer()
     X, y = data.data, data.target
 
-    # Standardize the predict_features
+    # Standardize the predict_data
     scaler = StandardScaler()
     X = scaler.fit_transform(X)
 
@@ -32,7 +32,7 @@ def logistic_regression(visualize: bool = False):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     # Train the Logistic Regression model
-    model = LogisticRegression(learning_rate=0.01, num_iterations=1000, activation_function=sigmoid)
+    model = LogisticRegression(learning_rate=0.01, n_iterations=1000, activation_function=sigmoid)
     model.fit(X_train, y_train)
 
     # Make predictions on the test set
@@ -80,7 +80,7 @@ def logistic_regression_multiclass(visualize: bool = False):
     X, y = data.data, data.target
     num_classes = len(np.unique(y))
 
-    # Standardize the predict_features
+    # Standardize the predict_data
     scaler = StandardScaler()
     X = scaler.fit_transform(X)
 
@@ -90,9 +90,9 @@ def logistic_regression_multiclass(visualize: bool = False):
     # Train the Logistic Regression Model
     reg = LogisticRegression(
         learning_rate=0.01,
-        num_iterations=1000,
+        n_iterations=1000,
         activation_function=softmax,
-        num_classes=num_classes,
+        n_classes=num_classes,
     )
     reg.fit(X_train, y_train)
 

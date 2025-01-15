@@ -17,7 +17,7 @@ def gaussian_decision_tree(visualize=False):
     data = load_breast_cancer()
     X, y = data.data, data.target
 
-    # Standardize features
+    # Standardize data
     scaler = StandardScaler()
     X = scaler.fit_transform(X)
 

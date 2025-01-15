@@ -2,7 +2,7 @@ import numpy as np
 from numpy.typing import ArrayLike
 
 from ml_from_scratch.algorithms.supervised.decision_tree import DecisionTree
-from ml_from_scratch.utils.validate_inputs import validate_supervised_fit, validate_predict_classifier
+from ml_from_scratch.utils.validate_inputs import validate_fit, validate_predict_classifier
 
 
 class RandomForest:
@@ -15,10 +15,13 @@ class RandomForest:
         Initializes necessary parameters
 
         Args:
-            - n_trees (int): Number of decision trees in the forest
+            - n_trees (int): Number of decision _trees in the forest
             - min_samples_split (int): Minimum samples required to split a node
-            - max_depth (int | None): Maximum depth of each tree. If None, trees grow until other stopping criteria are met
-            - n_features (int | None): Number of predict_features to randomly select at each split. If None, all predict_features are used
+        Optional Args:
+            - max_depth (int): Maximum depth of each tree
+                               If None, the trees grow until other stopping criteria are met
+            - n_features (int): Number of predict_data to randomly select at each split
+                                If None, all predict_data are used
         """
 
         self.n_trees = n_trees
@@ -26,49 +29,54 @@ class RandomForest:
         self.min_samples_split = min_samples_split
         self.n_features = n_features
 
-        self.trees: list[DecisionTree] = []
+        self._trees: list[DecisionTree] = []
 
-    def fit(self, features: ArrayLike, targets: ArrayLike) -> None:
+        self.training_data_shape = None
+
+    def fit(self, data: ArrayLike, targets: ArrayLike) -> None:
         """
-        Fits the Decision Tree model to the provided training data using gradient descent
+        Fits the Random Forest algorithm using the provided training data and targets
 
         Args:
-            - predict_features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
-            - targets (ArrayLike): The input predict_features matrix, must have shape [n_samples, ]
+            - data (ArrayLike): The input data matrix, must have shape [n_samples, n_features]
+            - targets (ArrayLike): The input target matrix, must have shape [n_samples, ]
         """
         # validate inputs and convert to numpy arrays
-        features, targets = validate_supervised_fit(features, targets)
-        self.training_features_shape = features.shape # stored for validating prediction inputs
-        self.trees = []
+        data, targets = validate_fit(data, targets)
+        self.training_data_shape = data.shape
+
+        self._trees = []
 
         for _ in range(self.n_trees):
             # Create a new decision tree
-            tree = DecisionTree(max_depth=self.max_depth, min_samples_split=self.min_samples_split, n_features=self.n_features)
+            tree = DecisionTree(
+                max_depth=self.max_depth, min_samples_split=self.min_samples_split, n_features=self.n_features
+            )
 
             # Generate bootstrap samples
-            features_subset, targets_subset = self._bootstrap_samples(features, targets)
+            data_subset, targets_subset = self._bootstrap_samples(data, targets)
 
             # Fit the tree on the bootstrap sample
-            tree.fit(features_subset, targets_subset)
+            tree.fit(data_subset, targets_subset)
 
             # Add the trained tree to the forest
-            self.trees.append(tree)
+            self._trees.append(tree)
 
-    def predict(self, features: ArrayLike) -> np.ndarray:
+    def predict(self, data: ArrayLike) -> np.ndarray:
         """
-        Predicts target values for the given input data (predict_features)
+        Predicts target values for the given input data
 
         Args:
-            - predict_features (ArrayLike): The input feature matrix, must have shape [n_samples, n_features]
+            - data (ArrayLike): The input data matrix, must have shape [m_samples, n_features]
 
         Returns:
-            - np.ndarray: Predicted target values, shape [n_samples, num_classes]
+            - np.ndarray: Predicted target values, shape [m_samples, ]
         """
         # validate inputs and convert to numpy arrays
-        features = validate_predict_classifier(features, np.zeros(self.training_features_shape))
+        data = validate_predict_classifier(data, self.training_data_shape)
 
-        # Collect predictions from all trees in the forest
-        tree_predictions = np.array([tree.predict(features) for tree in self.trees])
+        # Collect predictions from all _trees in the forest
+        tree_predictions = np.array([tree.predict(data) for tree in self._trees])
 
         # Majority vote for each sample
         predictions = np.apply_along_axis(lambda labels: np.bincount(labels).argmax(), axis=0, arr=tree_predictions)
@@ -76,20 +84,20 @@ class RandomForest:
         return predictions
 
     @staticmethod
-    def _bootstrap_samples(features: np.ndarray, targets: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    def _bootstrap_samples(data: np.ndarray, targets: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """
         Generates a bootstrap sample from the data.
 
         Args:
-            - predict_features (np.ndarray): Feature matrix of shape [n_samples, n_features].
-            - targets (np.ndarray): Target vector of shape [n_samples, ].
+            - data (np.ndarray): The input data matrix, must have shape [n_samples, n_features]
+            - targets (np.ndarray): The input target matrix, must have shape [n_samples, ]
 
         Returns:
-            - tuple[np.ndarray, np.ndarray]: Bootstrap feature matrix and target vector.
+            - tuple: Subset of the data and targets
         """
-        n_samples = features.shape[0]
+        n_samples = data.shape[0]
         idxs = np.random.choice(n_samples, n_samples, replace=True)
-        return features[idxs], targets[idxs]
+        return data[idxs], targets[idxs]
 
 
 if __name__ == '__main__':

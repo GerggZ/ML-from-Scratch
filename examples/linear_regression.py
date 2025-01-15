@@ -26,7 +26,7 @@ def linear_regression(visualize: bool = False) -> None:
     X_test = scaler.transform(X_test)
 
     # Initialize and train the Linear Regression model
-    reg = LinearRegression(learning_rate=0.01, num_iterations=1000)
+    reg = LinearRegression(learning_rate=0.01, n_iterations=1000)
     reg.fit(X_train, y_train)
 
     # Make class_predictions
