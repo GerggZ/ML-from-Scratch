@@ -40,7 +40,7 @@ class SupportVectorMachines:
         self.training_data_shape = data.shape
 
         # Ensure labels are in {-1, 1}
-        targets_ = np.where(targets <= 0, -1, 1)
+        targets_ = np.where(targets == 0, -1, 1)
         self._gradient_descent(data, targets_)
 
     def predict(self, data: ArrayLike) -> np.ndarray:
@@ -54,7 +54,6 @@ class SupportVectorMachines:
             - np.ndarray: Predicted target values, shape [m_samples, ]
                           Output targets are in {-1, 1}.
         """
-        # validate inputs and convert to numpy arrays
         data = validate_predict_regression(data, self._weights, self._bias)
         approx = np.dot(data, self._weights) - self._bias
         return np.sign(approx)
@@ -67,7 +66,6 @@ class SupportVectorMachines:
             - data (np.ndarray): The input data matrix, must have shape [n_samples, n_features]
             - targets (np.ndarray): The input target matrix, must have shape [n_samples, ]
         """
-        # Initialize _weights and _bias
         self._initialize_weights_and_bias(data.shape[1])
 
         # Gradient Descent for SVM optimization

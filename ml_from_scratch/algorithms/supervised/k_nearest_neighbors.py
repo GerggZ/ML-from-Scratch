@@ -43,7 +43,6 @@ class KNearestNeighbors:
         Returns:
             - np.ndarray: Predicted target values, shape [m_samples, ]
         """
-        # Validate inputs and convert to numpy arrays
         data = validate_predict_classifier(data, self.training_data_shape)
 
         # Calculate the pairwise distances between the input data and the training data
@@ -61,5 +60,5 @@ class KNearestNeighbors:
 
 if __name__ == '__main__':
     print('Testing K Nearest Neighbors algorithm')
-    from examples import k_nearest_neighbors
-    k_nearest_neighbors(visualize=True)
+    from examples import k_nearest_neighbors_example
+    k_nearest_neighbors_example(visualize=True)

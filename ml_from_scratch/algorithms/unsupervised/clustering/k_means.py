@@ -34,6 +34,7 @@ class KMeans:
         Returns:
             - np.ndarray: Cluster labels for each sample.
         """
+        # Validate input data (i.e., whether it can be converted to numpy array)
         self.data = np.array(data)
 
         cluster_labels = self._cluster_data()

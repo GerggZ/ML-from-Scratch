@@ -7,17 +7,13 @@ A collection of machine learning algorithms implemented from scratch using NumPy
   - Linear Regression
   - Logistic Regression
   - Decision Tree
-  - Gaussian Decision Tree
   - Random Forest
   - Niave Bayes
   - Support Vector Machines
 - **Unsupervised Learning**
-  - K-Means Clustering<small>
-  - ~~Principal Component Analysis (PCA)~~
-- ~~**Optimization**~~
-  - ~~Gradient Descent~~
-  - ~~Stochastic Gradient Descent~~
-</small>
+  - K-Means Clustering
+  - Principal Component Analysis (PCA)
+
 ## Folder Structure
 ```
 ml_from_scratch/         # Core library

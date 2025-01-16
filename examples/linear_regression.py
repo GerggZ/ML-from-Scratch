@@ -5,43 +5,29 @@ from sklearn.preprocessing import StandardScaler
 
 from ml_from_scratch.algorithms import LinearRegression
 from ml_from_scratch.utils.metrics import mean_squared_error
+from data_bases.get_database import get_sklearn_data_split
 
 
-def linear_regression(visualize: bool = False) -> None:
+def linear_regression_example(
+        X_train, X_test, y_train, y_test,
+        visualize: bool = False
+):
     """
-    Test the LinearRegression model on synthetic data using Mean Squared Error (MSE).
-
-    Args:
-        - visualize (bool): To plot/visualize test data using matplotlib
+    Example of how to use the Linear Regression algorithm with the sklearn california housing dataset
+    Optionally visualizes the output using matplotlib
     """
-    # Load data
-    data = fetch_california_housing(as_frame=True)
-    X = data.data[['MedInc']].to_numpy()
-    y = data.target.to_numpy()
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-    # Normalize the data
-    scaler = StandardScaler()
-    X_train = scaler.fit_transform(X_train)  # Compute mean/std and transform
-    X_test = scaler.transform(X_test)
-
-    # Initialize and train the Linear Regression model
     reg = LinearRegression(learning_rate=0.01, n_iterations=1000)
     reg.fit(X_train, y_train)
-
-    # Make class_predictions
     predictions = reg.predict(X_test)
 
-    # Calculate Mean Squared Error (MSE)
     mse = mean_squared_error(y_test, predictions)
+    print(f"\tLinear Regression Mean Squared Error: {mse:.4f}")
 
-    print(f"Linear Regression Model trained successfully")
     if visualize:
         from examples.utils.plotting_regression_and_classification import plot_linear_regression
 
         if X_test.shape[1] > 1:
-            # Apply PCA to reduce to 1D for visualization
-            pca = PCA(n_components=1)
+            pca = PCA(n_components=1)  # Projecting data to 1D for visualization
             pca.fit(X_train)
             X_test = pca.transform(X_test)
 
@@ -55,4 +41,14 @@ def linear_regression(visualize: bool = False) -> None:
 
 if __name__ == '__main__':
     print('Testing Linear Regression algorithm')
-    linear_regression(visualize=True)
+    data = fetch_california_housing(as_frame=True)
+    X, y = data.data[['MedInc']].to_numpy(), data.target.to_numpy()
+    X = StandardScaler().fit_transform(X)
+
+    # Remove housing prices over 5, because they seem....just off
+    mask = y <= 4.99
+    X = X[mask]
+    y = y[mask]
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    linear_regression_example(X_train, X_test, y_train, y_test, visualize=True)

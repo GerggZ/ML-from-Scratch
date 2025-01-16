@@ -41,22 +41,17 @@ class RandomForest:
             - data (ArrayLike): The input data matrix, must have shape [n_samples, n_features]
             - targets (ArrayLike): The input target matrix, must have shape [n_samples, ]
         """
-        # validate inputs and convert to numpy arrays
         data, targets = validate_fit(data, targets)
         self.training_data_shape = data.shape
 
         self._trees = []
 
         for _ in range(self.n_trees):
-            # Create a new decision tree
             tree = DecisionTree(
                 max_depth=self.max_depth, min_samples_split=self.min_samples_split, n_features=self.n_features
             )
 
-            # Generate bootstrap samples
             data_subset, targets_subset = self._bootstrap_samples(data, targets)
-
-            # Fit the tree on the bootstrap sample
             tree.fit(data_subset, targets_subset)
 
             # Add the trained tree to the forest
@@ -72,7 +67,6 @@ class RandomForest:
         Returns:
             - np.ndarray: Predicted target values, shape [m_samples, ]
         """
-        # validate inputs and convert to numpy arrays
         data = validate_predict_classifier(data, self.training_data_shape)
 
         # Collect predictions from all _trees in the forest
@@ -102,5 +96,5 @@ class RandomForest:
 
 if __name__ == '__main__':
     print('Testing Random Forest algorithm')
-    from examples import random_forest
-    random_forest(visualize=True)
+    from examples import random_forest_example
+    random_forest_example(visualize=True)

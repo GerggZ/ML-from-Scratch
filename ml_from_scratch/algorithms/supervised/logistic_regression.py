@@ -120,7 +120,7 @@ class LogisticRegression:
 
 if __name__ == '__main__':
     print('Testing Logistic Regression algorithm')
-    from examples import logistic_regression, logistic_regression_multiclass
+    from examples import logistic_regression_binary_example, logistic_regression_multiclass_example
 
-    logistic_regression(visualize=True)
-    logistic_regression_multiclass(visualize=True)
+    logistic_regression_binary_example(visualize=True)
+    logistic_regression_multiclass_example(visualize=True)

@@ -4,7 +4,6 @@ from ml_from_scratch.utils.metrics.regression_metrics import mean_squared_error,
 from ml_from_scratch.utils.metrics.classification_metrics import accuracy_score, precision_score, recall_score, f1_score
 from ml_from_scratch.utils.metrics.distance_metrics import compute_pairwise_distances, compute_distances_to_point
 
-# Export all metrics in this namespace
 __all__ = [
     "mean_squared_error",
     "mean_absolute_error",

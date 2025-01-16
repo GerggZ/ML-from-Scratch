@@ -69,7 +69,6 @@ class NaiveBayes:
         n_samples, n_features = self.training_data_shape
         n_classes = len(self._classes)
 
-        # Initialize the mean, variance, and prior for each class
         self._mean = np.zeros((n_classes, n_features), dtype=np.float64)
         self._variance = np.zeros((n_classes, n_features), dtype=np.float64)
         self._priors = np.zeros(n_classes, dtype=np.float64)
@@ -111,7 +110,7 @@ class NaiveBayes:
         mean = self._mean[class_idx]
         var = self._variance[class_idx]
 
-        numerator = np.exp(-((data_sample - mean) ** 2) / (2 * var))
+        numerator = np.exp(-((data_sample - mean) ** 2) / (2 * var + 1e-9))
         denominator = np.sqrt(2 * np.pi * var)
 
         return numerator / denominator

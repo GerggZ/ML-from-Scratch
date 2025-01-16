@@ -1,38 +1,33 @@
-from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split
-
-from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
 from ml_from_scratch.algorithms import NaiveBayes
 from ml_from_scratch.utils.metrics import accuracy_score
+from data_bases.get_database import get_sklearn_data_split
 
 
-def naive_bayes(visualize: bool = False):
-
-    # Load and split the dataset
-    data = load_iris()
-    X, y = data.data, data.target
-
-    # Standardize data
-    scaler = StandardScaler()
-    X = scaler.fit_transform(X)
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+def naive_bayes_example(
+        X_train, X_test, y_train, y_test,
+        visualize: bool = False
+):
+    """
+    Example of how to use the Naive Bayes algorithm with the sklearn iris dataset
+    Optionally visualizes the output using matplotlib
+    """
+    pca = PCA(n_components=10)  # Provides better results when components are less correlated
+    X_train = pca.fit_transform(X_train)
+    X_test = pca.transform(X_test)
 
     clf = NaiveBayes()
     clf.fit(X_train, y_train)
     predictions = clf.predict(X_test)
 
     acc = accuracy_score(y_test, predictions)
-    print(f"Naive Bayes Accuracy: {acc:.4f}")
+    print(f"\tNaive Bayes accuracy: {acc:.4f}")
 
-    # Visualization
     if visualize:
         from examples.utils.plotting_regression_and_classification import plot_classification_supervised
 
-        # Reduce data to 2D (for visualization)
-        pca = PCA(n_components=2)
+        pca = PCA(n_components=2)  # Projecting data to 2D for visualization
         X_train_2d = pca.fit_transform(X_train)
         X_test_2d = pca.transform(X_test)
 
@@ -46,4 +41,5 @@ def naive_bayes(visualize: bool = False):
 
 if __name__ == '__main__':
     print('Testing Naive Bayes algorithm')
-    naive_bayes(visualize=True)
+    train_test_data = get_sklearn_data_split("digits", test_size=0.3, random_state=42)
+    naive_bayes_example(*train_test_data, visualize=True)

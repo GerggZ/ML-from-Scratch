@@ -163,10 +163,6 @@ def plot_linear_regression(
     # Plot the regression line
     plt.plot(X, predictions, color="red", linewidth=2, label="Regression Line")
 
-    # Add residual lines (distances from data points to regression line)
-    for xi, yi, pi in zip(X, y, predictions):
-        plt.plot([xi, xi], [yi, pi], color="gray", linestyle="dotted", alpha=0.5)
-
     # Titles and labels
     plt.title(title, fontsize=14)
     plt.xlabel(xlabel, fontsize=12)

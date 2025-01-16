@@ -61,10 +61,11 @@ def information_gain_gaussian(feature_column: np.ndarray, targets: np.ndarray) -
 
     # Skip if the standard deviation is zero
     if std == 0:
-        return 0
+        return 0, 0, 0
 
     # Compute Gaussian likelihoods
     likelihoods = np.exp(-0.5 * ((feature_column - mean) / std) ** 2) / (std * np.sqrt(2 * np.pi))
+    likelihoods = (likelihoods - np.min(likelihoods)) / (np.max(likelihoods) - np.min(likelihoods))
 
     # Calculate parent entropy
     parent_entropy = entropy(targets)
@@ -73,8 +74,13 @@ def information_gain_gaussian(feature_column: np.ndarray, targets: np.ndarray) -
     left_indices = likelihoods > 0.5
     right_indices = ~left_indices
 
-    if len(left_indices) == 0 or len(right_indices) == 0:
-        return 0
+    if np.sum(left_indices) == 0:
+        j = 7
+    if np.sum(right_indices) == 0:
+        j = 87
+
+    if np.sum(left_indices) == 0 or np.sum(right_indices) == 0:
+        return 0, 0, 0
 
     # Calculate child entropies
     left_entropy = entropy(targets[left_indices])

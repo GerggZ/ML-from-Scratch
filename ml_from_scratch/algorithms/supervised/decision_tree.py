@@ -34,7 +34,6 @@ class DecisionTree:
             - data (ArrayLike): The input data matrix, must have shape [n_samples, n_features]
             - targets (ArrayLike): The input target matrix, must have shape [n_samples, ]
         """
-        # validate inputs and convert to numpy arrays
         data, targets = validate_fit(data, targets)
         self.training_data_shape = data.shape
 
@@ -46,12 +45,11 @@ class DecisionTree:
         Predicts target values for the given input data
 
         Args:
-            - data (ArrayLike): The input data matrix, must have shape [m_samples, n_features]
+            - data (ArrayLike): The input data matrix, must have shape [n_samples, n_features]
 
         Returns:
-            - np.ndarray: Predicted target values, shape [m_samples, ]
+            - np.ndarray: Predicted target values, shape [n_components, ]
         """
-        # validate inputs and convert to numpy arrays
         data = validate_predict_classifier(data, self.training_data_shape)
         return np.array([self._traverse_tree(data_sample, self._root) for data_sample in data])
 
@@ -73,7 +71,7 @@ class DecisionTree:
         if depth == self.max_depth or n_samples < self.min_samples_split or n_classes == 1:
             return Node(value=np.bincount(targets).argmax())
 
-        # Select random subset of predict_data if n_features is set
+        # Select random subset of predict_data of n_features
         selected_feature_idxs = np.random.choice(data.shape[1], self.n_features, replace=False)
 
         # Find the best split
@@ -159,5 +157,5 @@ class DecisionTree:
 
 if __name__ == '__main__':
     print('Testing Decision Tree algorithm')
-    from examples import decision_tree
-    decision_tree(visualize=True)
+    from examples import decision_tree_example
+    decision_tree_example(visualize=True)

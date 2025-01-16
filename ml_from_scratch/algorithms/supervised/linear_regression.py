@@ -32,11 +32,9 @@ class LinearRegression:
             - data (ArrayLike): The input data matrix, must have shape [n_samples, n_features]
             - targets (ArrayLike): The input target matrix, must have shape [n_samples, ]
         """
-        # Validate inputs and convert to numpy arrays
         data, targets = validate_fit(data, targets)
         self.training_data_shape = data.shape
 
-        # Perform gradient descent
         self._gradient_descent(data, targets)
 
     def predict(self, data: ArrayLike) -> np.ndarray:
@@ -49,10 +47,7 @@ class LinearRegression:
         Returns:
             - np.ndarray: Predicted target values, shape [m_samples, ]
         """
-        # Validate inputs and convert to numpy arrays
         data = validate_predict_regression(data, self._weights, self._bias)
-
-        # Compute class_predictions
         predicted_targets = np.dot(data, self._weights) + self._bias
 
         return predicted_targets
@@ -69,7 +64,6 @@ class LinearRegression:
         self._initialize_weights_and_bias(n_features)
 
         for _ in range(self.n_iterations):
-            # calculate class_predictions
             target_predictions = np.dot(data, self._weights) + self._bias
 
             # determine delta variables for weight (dw) and _bias (db)
@@ -93,5 +87,5 @@ class LinearRegression:
 
 if __name__ == '__main__':
     print('Testing Linear Regression algorithm')
-    from examples import linear_regression
-    linear_regression(visualize=True)
+    from examples import linear_regression_example
+    linear_regression_example(visualize=True)
